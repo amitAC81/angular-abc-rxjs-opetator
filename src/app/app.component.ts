@@ -12,10 +12,10 @@ import { interval, of, timer, Observable, ReplaySubject } from 'rxjs';
 export class AppComponent {
   // FakeLink:- https://my-json-server.typicode.com/amitAC81/database
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  title = 'rxjs-operator';
-  data;
-  name = 'Angular';
-  datas = [
+  public title: string;
+  public name: string;
+  public data: object;
+  public studentData: object = [
     {
       id: 1,
       name: 'abc',
@@ -45,6 +45,9 @@ export class AppComponent {
   constructor(
     private http: HttpClient
   ) {
+    this.title = 'rxjs-operator';
+    this.name = 'Angular';
+
     // const destroy = Observable.fromEvent().first();
 
     // // RXJS Pairwise example...
@@ -86,37 +89,53 @@ export class AppComponent {
     //   const subscribe = example.subscribe(val => console.log(val));
   }
 
-  getEmployees(): Observable<any[]> {
-    return this.http.get<any[]>(`https://my-json-server.typicode.com/amitAC81/database/Employee`);
+
+  // Get Employee data
+  private getEmployees(): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:3000/Employee`);
   }
 
-  take() {
+  //  Take RxJS Operator
+  public take(): void {
     this.getEmployees().pipe(take(2)).subscribe(data => {
       console.log(data);
       this.data = data;
     });
 
   }
-  takeUntil() {
+
+  // TakeUntil RxJS Operator
+  public takeUntil(): void {
     this.getEmployees().pipe(takeUntil(this.destroyed$)).subscribe(data => {
       console.log(data);
       this.data = data;
     });
   }
-  skipUntil() {
+
+  // SkipSelf RxJS Operator
+  public skipUntil(): void {
     this.getEmployees().pipe(skipUntil(this.destroyed$)).subscribe(data => {
       console.log(data);
       this.data = data;
     });
   }
-  pairwise() {
 
+  // PairWise RxJS Operator
+  public pairwise(): void {
+    this.getEmployees().pipe(pairwise(), take(3)).subscribe(data => {
+      console.log(data);
+      this.data = data;
+    });
   }
 
-  onOff() {
+  // Stop Execution
+  public onOff(): void {
     this.OnDestroy();
+    this.data = {};
   }
-  OnDestroy() {
+
+  // Destroy Method
+  private OnDestroy(): void {
     this.destroyed$.next(true);
     console.log('Stop');
     this.destroyed$.complete();
