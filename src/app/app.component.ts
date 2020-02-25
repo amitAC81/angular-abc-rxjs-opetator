@@ -47,8 +47,135 @@ export class AppComponent {
   ) {
     this.title = 'rxjs-operator';
     this.name = 'Angular';
+  }
 
-    // const destroy = Observable.fromEvent().first();
+
+  // Get Employee data
+  private getEmployees(): Observable<any[]> {
+    return this.http.get<any[]>(`https://my-json-server.typicode.com/amitAC81/database/Employee`);
+  }
+
+  ajax() {
+
+  }
+  catch() {
+
+  }
+
+  catchError() {
+
+  }
+
+  combineLatest() {
+
+  }
+  concatMap() {
+
+  }
+  delay() {
+
+  }
+  distinctUntilChanged() {
+
+  }
+  do() {
+
+  }
+  filter() {
+
+  }
+  finalize() {
+
+  }
+  find() {
+
+  }
+  forkJoin() {
+
+  }
+  mergeMap() {
+
+  }
+  map() {
+
+  }
+
+  // PairWise RxJS Operator
+  public pairwise(): void {
+    this.getEmployees().pipe(pairwise(), take(3)).subscribe(data => {
+      console.log(data);
+      this.data = data;
+    });
+  }
+
+  repeat() {
+
+  }
+  retry() {
+
+  }
+  shareReplay() {
+
+  }
+
+  // SkipSelf RxJS Operator
+  public skipUntil(): void {
+    this.getEmployees().pipe(skipUntil(this.destroyed$)).subscribe(data => {
+      console.log(data);
+      this.data = data;
+    });
+  }
+
+  switchMap() {
+
+  }
+
+  // Take RxJS Operator
+  public take(): void {
+    this.getEmployees().pipe(take(2)).subscribe(data => {
+      console.log(data);
+      this.data = data;
+    });
+  }
+
+  // TakeUntil RxJS Operator
+  public takeUntil(): void {
+    this.getEmployees().pipe(takeUntil(this.destroyed$)).subscribe(data => {
+      console.log(data);
+      this.data = data;
+    });
+  }
+  tap() {
+
+  }
+  timeInterval() {
+
+  }
+  timeout() {
+
+  }
+  toPromiss() {
+
+  }
+
+
+  // Stop Execution
+  public onOff(): void {
+    this.OnDestroy();
+    this.data = {};
+  }
+
+  // Destroy Method
+  private OnDestroy(): void {
+    this.destroyed$.next(true);
+    console.log('Stop');
+    this.destroyed$.complete();
+  }
+}
+
+
+
+ // const destroy = Observable.fromEvent().first();
 
     // // RXJS Pairwise example...
     // this.name = 'RXJS Pairwise';
@@ -87,57 +214,3 @@ export class AppComponent {
     //   const example = source.pipe(skipUntil(timer(6000)));
     //   // output: 5...6...7...8........
     //   const subscribe = example.subscribe(val => console.log(val));
-  }
-
-
-  // Get Employee data
-  private getEmployees(): Observable<any[]> {
-    return this.http.get<any[]>(`http://localhost:3000/Employee`);
-  }
-
-  //  Take RxJS Operator
-  public take(): void {
-    this.getEmployees().pipe(take(2)).subscribe(data => {
-      console.log(data);
-      this.data = data;
-    });
-
-  }
-
-  // TakeUntil RxJS Operator
-  public takeUntil(): void {
-    this.getEmployees().pipe(takeUntil(this.destroyed$)).subscribe(data => {
-      console.log(data);
-      this.data = data;
-    });
-  }
-
-  // SkipSelf RxJS Operator
-  public skipUntil(): void {
-    this.getEmployees().pipe(skipUntil(this.destroyed$)).subscribe(data => {
-      console.log(data);
-      this.data = data;
-    });
-  }
-
-  // PairWise RxJS Operator
-  public pairwise(): void {
-    this.getEmployees().pipe(pairwise(), take(3)).subscribe(data => {
-      console.log(data);
-      this.data = data;
-    });
-  }
-
-  // Stop Execution
-  public onOff(): void {
-    this.OnDestroy();
-    this.data = {};
-  }
-
-  // Destroy Method
-  private OnDestroy(): void {
-    this.destroyed$.next(true);
-    console.log('Stop');
-    this.destroyed$.complete();
-  }
-}
